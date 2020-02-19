@@ -15,7 +15,7 @@ type fileReaderStub struct {
 }
 ```
 Now implement the interface methods using `stubigo.Called`
-```
+```golang
 func (reader *fileReaderStub) Read(path string) (string, error) {
     res := reader.Called(path)
     return res.String(0, "default string"), res.Error(1, nil)
