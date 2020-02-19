@@ -7,7 +7,7 @@ Let's say we want to stub our FileReader
 type FileReader interface {
     Read(path string) string
 }    
-``` 
+```
 After choosing the interface you want to mock create new implementation
 ```golang
 type fileReaderStub struct {
