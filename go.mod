@@ -1,4 +1,4 @@
-module stubigo
+module github.com/omersaraf/stubigo
 
 go 1.12
 
