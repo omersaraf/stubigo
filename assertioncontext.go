@@ -26,6 +26,10 @@ func (s *AssertionContext) Called(times int) {
 	assert.Equal(s.t, times, s.called, fmt.Sprintf("Expected number of callArguments to be %d but was actually %d", times, s.called))
 }
 
+func (s *AssertionContext) NotCalled() {
+	s.Called(0)
+}
+
 func (s *AssertionContext) CalledWith(arguments ...interface{}) {
 	lastInvocationArguments := s.getLastInvocationArguments()
 

@@ -1,10 +1,10 @@
 package stubigo
 
 type functionContext struct {
-	returnValues map[string][]interface{}
+	returnValues *ConcurrentInterfaceArrayMap
 	name         string
 }
 
 func (f *functionContext) Returning(returnValues ...interface{}) {
-	f.returnValues[f.name] = returnValues
+	f.returnValues.Set(f.name, returnValues)
 }
