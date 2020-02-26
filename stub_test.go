@@ -49,3 +49,13 @@ func TestStubigo_WithContainsEqualityFunction(t *testing.T) {
 	assert.Error(t, err, "error")
 	assert.Equal(t, 10, v1)
 }
+
+func TestFunctionContext_GetArgumentCalledAt(t *testing.T) {
+	stub := &InterfaceStub{NewStub()}
+	stub.With(stub.SomeFunction)
+
+	interfaceUsage(stub)
+
+	firstArgument, _ := stub.With(stub.SomeFunction).GetArgumentCalledAt(0)
+	assert.Equal(t, firstArgument, "test")
+}

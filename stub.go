@@ -26,8 +26,9 @@ func NewStub() Stub {
 func (s *Stub) With(function interface{}) *functionContext {
 	name := getFunctionName(reflect.ValueOf(function).Pointer())
 	return &functionContext{
-		returnValues: s.outputs,
-		name:         name,
+		returnValues:  s.outputs,
+		callArguments: s.callArguments,
+		name:          name,
 	}
 }
 
