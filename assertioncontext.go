@@ -35,7 +35,7 @@ func (s *AssertionContext) CalledWith(arguments ...interface{}) {
 
 	assert.LessOrEqual(s.t, len(arguments), len(lastInvocationArguments), fmt.Sprintf("Expected too many arguments to be called (expected %d, actual %d)", len(arguments), len(lastInvocationArguments)))
 	for i := 0; i < len(arguments) && i < len(lastInvocationArguments); i++ {
-		s.CalledWithArgumentAt(0, arguments[i])
+		s.CalledWithArgumentAt(i, arguments[i])
 	}
 }
 
