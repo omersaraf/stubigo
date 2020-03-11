@@ -9,15 +9,20 @@ import (
 
 type SomeInterface interface {
 	SomeFunction(arg string) (int, error)
+	MultiParameters(str string, array []string, integer int)
 }
 
-type InterfaceStub struct {
+type interfaceStub struct {
 	Stub
 }
 
-func (stub *InterfaceStub) SomeFunction(arg string) (int, error) {
+func (stub *interfaceStub) SomeFunction(arg string) (int, error) {
 	called := stub.Called(arg)
 	return called.Int(0, 1), called.Error(1, nil)
+}
+
+func (stub *interfaceStub) MultiParameters(str string, array []string, integer int) {
+	stub.Called(str, array, integer)
 }
 
 func interfaceUsage(someInterface SomeInterface) (int, error) {
@@ -25,7 +30,7 @@ func interfaceUsage(someInterface SomeInterface) (int, error) {
 }
 
 func TestStubigo(t *testing.T) {
-	stub := &InterfaceStub{NewStub()}
+	stub := &interfaceStub{NewStub()}
 	stub.With(stub.SomeFunction).Returning(10, fmt.Errorf("error"))
 
 	v1, err := interfaceUsage(stub)
@@ -36,7 +41,7 @@ func TestStubigo(t *testing.T) {
 }
 
 func TestStubigo_WithContainsEqualityFunction(t *testing.T) {
-	stub := &InterfaceStub{NewStub()}
+	stub := &interfaceStub{NewStub()}
 	stub.With(stub.SomeFunction).Returning(10, fmt.Errorf("error"))
 	contains := func(actual interface{}, expected interface{}) bool {
 		actualString, _ := actual.(string)
@@ -50,8 +55,21 @@ func TestStubigo_WithContainsEqualityFunction(t *testing.T) {
 	assert.Equal(t, 10, v1)
 }
 
+func TestStubigo_CalledWith(t *testing.T) {
+	stub := &interfaceStub{NewStub()}
+	stub.With(stub.MultiParameters)
+
+	str := "test"
+	array := []string{"hello", "world"}
+	integer := 5
+
+	stub.MultiParameters(str, array, integer)
+
+	stub.Assert(t, stub.MultiParameters).CalledWith(str, array, integer)
+}
+
 func TestFunctionContext_GetArgumentCalledAt(t *testing.T) {
-	stub := &InterfaceStub{NewStub()}
+	stub := &interfaceStub{NewStub()}
 	stub.With(stub.SomeFunction)
 
 	interfaceUsage(stub)

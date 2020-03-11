@@ -40,7 +40,9 @@ func (s *AssertionContext) CalledWith(arguments ...interface{}) {
 }
 
 func (s *AssertionContext) CalledWithArgumentAt(index int, argument interface{}) {
-	s.CalledWithArgumentAtWithEqualityFunction(index, argument, defaultEqualityFunction)
+	lastInvocationArguments := s.getLastInvocationArguments()
+	actualCalledArgument := lastInvocationArguments[index]
+	assert.Equal(s.t, argument, actualCalledArgument, fmt.Sprintf("Expected function to be called with %v at index %d but called with %v", argument, index, actualCalledArgument))
 }
 
 func (s *AssertionContext) CalledWithArgumentAtWithEqualityFunction(index int, argument interface{}, areEqual equalityFunction) {
